@@ -1,5 +1,3 @@
-float("hahsahshs")
-
 number1 = input("Please enter the first number: ")
 number2 = input("Please enter the second number: ")
 is_valid = True
