@@ -26,7 +26,7 @@ def get_discounts(client, studies,client_number):
     
     if client_number % 2 != 0:
         discount += studies.get(client.get("study")).get("price") * 0.02
-
+    client["discount"] = False
     return discount
 
 def get_net_amount(client, discount, studies):
@@ -64,19 +64,55 @@ def main():
     total_net_amountU = 0
     total_net_amountR = 0
     total_net_amountT = 0
+    clients_u = 0
+    clients_r = 0
+    clients_t = 0
     print_welcome()
     while True:
         option=get_option(studies_dict)
         client = get_client_data(option)
         clients.append(client)
         discount = get_discounts(client,studies_dict,len(clients))
+        print(clients[0])
         total_discounts += discount
         total = get_net_amount(client,discount,studies_dict)
         total_net_amount += total
         print_invoice(client, studies_dict, total)
-        print(client)
+        if option == "U":
+            clients_u += 1
+            total_net_amountU += total_net_amount
+        if option == "R":
+            clients_r += 1
+            total_net_amountR += total_net_amount
+        if option == "T":
+            clients_t += 1
+            total_net_amountT += total_net_amount
         if input("Do you want to continue Y-Yes or N-No") == "Y":
             break
-    #print_final_day(clients)
+    print("*** END OF DAY***")
+    print("Clients U:", clients_u)
+    print("Clients T:", clients_t)
+    print("Clients R:", clients_r)
+    print("Discounts: ",total_discounts)
+    if len(clients) == 0:
+        print("Average: 0")
+    else:
+        print("Average:",total_net_amount/len(clients))
+
+    if clients_u == 0:
+        print("Average U: 0")
+    else:
+        print("Average U:",total_net_amountU/clients_u)
+
+    if clients_t == 0:
+        print("Average T: 0")
+    else:
+        print("Average T:",total_net_amountT/clients_t)
+
+    if clients_r == 0:
+        print("Average R: 0")
+    else:
+        print("Average R:",total_net_amountR/clients_r)
+    
 
 main()
